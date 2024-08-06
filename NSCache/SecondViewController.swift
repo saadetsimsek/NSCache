@@ -8,22 +8,41 @@
 import UIKit
 
 class SecondViewController: UIViewController {
+    
+    private let imageView : UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .secondarySystemBackground
+        return imageView
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .systemBackground
+        view.addSubview(imageView)
+        addConstraits()
+        request()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    private func addConstraits(){
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: 300),
+            imageView.heightAnchor.constraint(equalToConstant: 300),
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
-    */
+    
+    private func request(){
+        ImageProvider.shared.fetchImage { [weak self] image in
+            DispatchQueue.main.async {
+                self?.imageView.image = image
+            }
+        }
+    }
+
+    
 
 }
